@@ -12,10 +12,6 @@
 #define width 200
 #endif
 
-#ifndef rounds
-#define rounds 24 // this could be calculated
-#endif
-
 #ifndef capacity
 #define capacity 64
 #endif
@@ -36,18 +32,13 @@
 #define blockLength (bitrate/laneLength)
 #endif
 
+#ifndef rounds
+#define rounds 24 // this could be calculated
+#endif
+
 #ifndef sizeOfState
 #define sizeOfState 25
 #endif
-
-
-int coordinate(int x, int y) {
-	return (x%5)+5*(y%5);
-}
-
-uint64_t rotate(uint64_t x, int y) {
-	return ((x) << (y)) | ((x) >> ((64) - (y)));
-}
 
 uint64_t state[25];
 
@@ -74,9 +65,17 @@ struct paddedInput {
 	size_t length;
 };
 
+int coordinate(int x, int y) {
+	return (x%5)+5*(y%5);
+}
+
+uint64_t rotate(uint64_t x, int y) {
+	return (x << y) | (x >> (64 - y));
+}
+
 void theta() {
-	uint64_t C[5] = {0,0,0,0,0};
-	uint64_t D[5] = {0,0,0,0,0};
+	uint64_t C[5];
+	uint64_t D[5];
 
 	for(int i = 0; i < 5; ++i) {
 		C[i] =	state[coordinate(i, 0)] ^ state[coordinate(i, 1)] ^
@@ -95,7 +94,6 @@ void theta() {
 
 uint64_t* rhoPi() {
 	uint64_t* B = new uint64_t [sizeOfState];
-	memset(B, 0, sizeOfState);
 
 	for(int x = 0; x < 5; ++x) {
 		for(int y = 0; y < 5; ++y) {
@@ -135,7 +133,6 @@ void absorb(paddedInput paddedInput) {
 		}
 
 		keccakf();
-
 	}
 }
 
@@ -158,17 +155,8 @@ paddedInput padd(const uint8_t* input, size_t inputLength) {
 }
 
 uint8_t* squeez() {
-	uint64_t* Z = new uint64_t [blockLength];
-
-	for(int i = 0; i < blockLength; ++i) {
-		Z[i] = state[i];
-	}
-
 	uint8_t* returnValue = new uint8_t [outputLength];
-	memcpy(returnValue, Z, outputLength);
-
-	delete(Z);
-
+	memcpy(returnValue, state, outputLength);
 	return returnValue;
 }
 
@@ -191,15 +179,23 @@ uint8_t* keccak(const uint8_t* input, int inputLength) {
 int main() {
 	const char* test = "Keccak-256 Test Hash";
 	int size = strlen(test);
+	uint8_t expectedOutput[32] = {
+            0xA8, 0xD7, 0x1B, 0x07, 0xF4, 0xAF, 0x26, 0xA4,
+            0xFF, 0x21, 0x02, 0x7F, 0x62, 0xFF, 0x60, 0x26,
+            0x7F, 0xF9, 0x55, 0xC9, 0x63, 0xF0, 0x42, 0xC4,
+            0x6D, 0xA5, 0x2E, 0xE3, 0xCF, 0xAF, 0x3D, 0x3C
+	};
 
-	uint8_t* retVal = keccak((uint8_t *)test,size);
+	uint8_t* actualOutput = keccak((uint8_t *)test,size);
 
-	size = strlen((char*)retVal);
-	for(int i = 0; i < size; ++i) {
-		std::cout << std::uppercase << std::hex << int(retVal[i]) << " ";
+	int fail = memcmp(expectedOutput, actualOutput, 32);
+
+	if(fail == 0) {
+		std::cout << "success" << std::endl;
+	}
+	else {
+		std::cout << "fail" << std::endl;
 	}
 
 	return 0;
 }
-
-
