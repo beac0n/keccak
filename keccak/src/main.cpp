@@ -11,6 +11,7 @@
 #include <algorithm>
 #include "Keccak.h"
 #include "KeccakPppprocessing.h"
+#include "KeccakPppprocessingEarlyParity.h"
 
 int main() {
 	const char* testString = "Keccak-256 Test Hash";
@@ -20,7 +21,7 @@ int main() {
 			0x55, 0xC9, 0x63, 0xF0, 0x42, 0xC4, 0x6D, 0xA5, 0x2E, 0xE3, 0xCF,
 			0xAF, 0x3D, 0x3C };
 
-	Keccak* keccak = new KeccakPppprocessing();
+	Keccak* keccak = new KeccakPppprocessingEarlyParity();
 
 	uint8_t* actualOutput = keccak->keccak((uint8_t *) testString, size);
 	bool fail = memcmp(expectedOutput, actualOutput, 32);

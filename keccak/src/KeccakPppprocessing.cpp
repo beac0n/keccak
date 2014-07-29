@@ -20,10 +20,11 @@ void KeccakPppprocessing::keccakf() {
 	uint64_t A[sizeOfState];
 	memcpy(A, state, sizeOfState * 8);
 
-	for (int round = 0; round < rounds; ++round) {
+	uint64_t B[5];
+	uint64_t C[5];
+	uint64_t D[5];
 
-		uint64_t C[5];
-		uint64_t D[5];
+	for (int round = 0; round < rounds; ++round) {
 
 		for (int i = 0; i < 5; ++i) {
 			C[i] = A[coordinate(i, 0)] ^ A[coordinate(i, 1)]
@@ -35,7 +36,7 @@ void KeccakPppprocessing::keccakf() {
 			D[x] = C[(x + 4) % 5] ^ rotate(C[(x + 1) % 5], 1);
 		}
 
-		uint64_t B[5];
+
 
 		for (int y = 0; y < 5; ++y) {
 
