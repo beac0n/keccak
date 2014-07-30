@@ -1,7 +1,7 @@
 /*
  * KeccakPppprocessingEarlyParity.h
  *
- *  Created on: 28.07.2014
+ *  Created on: 30.07.2014
  *      Author: beac0n
  */
 
@@ -10,12 +10,13 @@
 
 #include "KeccakPppprocessing.h"
 
-class KeccakPppprocessingEarlyParity: public KeccakPppprocessing {
+class KeccakPppprocessingEarlyParity : public KeccakPppprocessing  {
 public:
 	KeccakPppprocessingEarlyParity();
 	virtual ~KeccakPppprocessingEarlyParity();
 protected:
 	void keccakf();
+
 };
 
 #endif /* KECCAKPPPPROCESSINGEARLYPARITY_H_ */

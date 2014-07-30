@@ -1,30 +1,37 @@
 /*
  * KeccakPppprocessingEarlyParity.cpp
  *
- *  Created on: 28.07.2014
+ *  Created on: 30.07.2014
  *      Author: beac0n
  */
 
 #include "KeccakPppprocessingEarlyParity.h"
 
 KeccakPppprocessingEarlyParity::KeccakPppprocessingEarlyParity() {
+	// TODO Auto-generated constructor stub
+
 }
 
 KeccakPppprocessingEarlyParity::~KeccakPppprocessingEarlyParity() {
+	// TODO Auto-generated destructor stub
 }
 
 void KeccakPppprocessingEarlyParity::keccakf() {
-	uint64_t E[sizeOfState];
 	uint64_t A[sizeOfState];
-	memcpy(A, state, sizeOfState * 8);
+	uint64_t E[sizeOfState];
 
 	uint64_t B[5];
 	uint64_t C[5];
 	uint64_t D[5];
 
-	for (int i = 0; i < 5; ++i) {
-		C[i] = A[coordinate(i, 0)] ^ A[coordinate(i, 1)] ^ A[coordinate(i, 2)]
-				^ A[coordinate(i, 3)] ^ A[coordinate(i, 4)];
+	memcpy(A, state, sizeOfState * 8);
+
+	for (int x = 0; x < 5; ++x) {
+		C[x] =	A[coordinate(x, 0)] ^
+				A[coordinate(x, 1)] ^
+				A[coordinate(x, 2)] ^
+				A[coordinate(x, 3)] ^
+				A[coordinate(x, 4)];
 	}
 
 	for (int round = 0; round < rounds; ++round) {
@@ -62,4 +69,3 @@ void KeccakPppprocessingEarlyParity::keccakf() {
 
 	memcpy(state, E, sizeOfState * 8);
 }
-
