@@ -16,17 +16,13 @@ KeccakPppprocessing::~KeccakPppprocessing() {
 }
 
 void KeccakPppprocessing::keccakf() {
-    uint64_t A[sizeOfState];
-    uint64_t E[sizeOfState];    
-    
-    memcpy(E, state, sizeOfState * 8);
-    
+    uint64_t A[sizeOfState];    
     uint64_t B[5];
     uint64_t C[5];
     uint64_t D[5];
 
     for (int round = 0; round < rounds; ++round) {        
-        memcpy(A, E, sizeOfState * 8);
+        memcpy(A, state, sizeOfState * 8);
         
         for (int x = 0; x < 5; ++x) {
             C[x] = A[coordinate(x, 0)] ^
@@ -54,14 +50,13 @@ void KeccakPppprocessing::keccakf() {
 
             for (int x = 0; x < 5; ++x) {
                 curIndex = coordinate(x, y);
-                E[curIndex] = B[x] ^ ((~B[(x + 1) % 5]) & B[(x + 2) % 5]);
+                state[curIndex] = B[x] ^ ((~B[(x + 1) % 5]) & B[(x + 2) % 5]);
             }
         }
 
-        E[0] ^= roundConstants[round];        
+        state[0] ^= roundConstants[round];        
     }
 
-    memcpy(state, E, sizeOfState * 8);
 
     /* Alogithms used to calculate newIndizies and newIndiziesX:
 
