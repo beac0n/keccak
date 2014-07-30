@@ -8,64 +8,63 @@
 #include "KeccakPppprocessingEarlyParity.h"
 
 KeccakPppprocessingEarlyParity::KeccakPppprocessingEarlyParity() {
-	// TODO Auto-generated constructor stub
-
+    // TODO Auto-generated constructor stub
 }
 
 KeccakPppprocessingEarlyParity::~KeccakPppprocessingEarlyParity() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
 
 void KeccakPppprocessingEarlyParity::keccakf() {
-	uint64_t A[sizeOfState];
-	uint64_t E[sizeOfState];
+    uint64_t A[sizeOfState];
+    uint64_t E[sizeOfState];
 
-	uint64_t B[5];
-	uint64_t C[5];
-	uint64_t D[5];
+    uint64_t B[5];
+    uint64_t C[5];
+    uint64_t D[5];
 
-	memcpy(A, state, sizeOfState * 8);
+    memcpy(E, state, sizeOfState * 8);
+    memcpy(A, E, sizeOfState * 8);
 
-	for (int x = 0; x < 5; ++x) {
-		C[x] =	A[coordinate(x, 0)] ^
-				A[coordinate(x, 1)] ^
-				A[coordinate(x, 2)] ^
-				A[coordinate(x, 3)] ^
-				A[coordinate(x, 4)];
-	}
+    for (int x = 0; x < 5; ++x) {
+        C[x] = A[coordinate(x, 0)] ^
+                A[coordinate(x, 1)] ^
+                A[coordinate(x, 2)] ^
+                A[coordinate(x, 3)] ^
+                A[coordinate(x, 4)];
+    }
 
-	for (int round = 0; round < rounds; ++round) {
+    for (int round = 0; round < rounds; ++round) {
+        memcpy(A, E, sizeOfState * 8);
 
-		for (int x = 0; x < 5; ++x) {
-			D[x] = C[(x + 4) % 5] ^ rotate(C[(x + 1) % 5], 1);
-		}
+        for (int x = 0; x < 5; ++x) {
+            D[x] = C[(x + 4) % 5] ^ rotate(C[(x + 1) % 5], 1);
+        }
 
-		memset(C, 0, 5*8);
+        memset(C, 0, 5 * 8);
 
-		for (int y = 0; y < 5; ++y) {
+        for (int y = 0; y < 5; ++y) {
 
-			int curIndex;
-			int curIndexX;
+            int curIndex;
+            int curIndexX;
 
-			for (int x = 0; x < 5; ++x) {
-				curIndex = newIndizies[Keccak::coordinate(x, y)];
-				curIndexX = newIndiziesX[Keccak::coordinate(x, y)];
+            for (int x = 0; x < 5; ++x) {
+                curIndex = newIndizies[coordinate(x, y)];
+                curIndexX = newIndiziesX[coordinate(x, y)];
 
-				B[x] = Keccak::rotate((A[curIndex] ^ D[curIndexX]),
-						cyclicShiftOffsets[curIndex]);
-			}
+                B[x] = rotate((A[curIndex] ^ D[curIndexX]), cyclicShiftOffsets[curIndex]);
+            }
 
-			for (int x = 0; x < 5; ++x) {
-				curIndex = Keccak::coordinate(x, y);
-				E[curIndex] = B[x] ^ ((~B[(x + 1) % 5]) & B[(x + 2) % 5]);
-				C[x] ^= E[curIndex];
-			}
-		}
+            for (int x = 0; x < 5; ++x) {
+                curIndex = coordinate(x, y);
+                E[curIndex] = B[x] ^ ((~B[(x + 1) % 5]) & B[(x + 2) % 5]);
+                C[x] ^= E[curIndex];
+            }
+        }
+        
+        C[0] ^= roundConstants[round];
+        E[0] ^= roundConstants[round];
+    }
 
-		E[0] ^= roundConstants[round];
-
-		memcpy(A, E, sizeOfState * 8);
-	}
-
-	memcpy(state, E, sizeOfState * 8);
+    memcpy(state, E, sizeOfState * 8);
 }

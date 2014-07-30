@@ -127,7 +127,7 @@ uint8_t* Keccak::keccak(const uint8_t* input, int inputLength) {
 	paddedInput paddedInput = padd(input, inputLength);
 
 	// initialization
-	memset(state, 0, sizeOfState);
+	memset(state, 0, sizeOfState*8);
 
 	//absorbing phase
 	absorb(paddedInput);
