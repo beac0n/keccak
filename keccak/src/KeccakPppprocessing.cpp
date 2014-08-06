@@ -2,7 +2,7 @@
  * KeccakOptimized.cpp
  *
  *  Created on: 28.07.2014
- *      Author: beac0n
+ *      Author: Maximilian Schempp
  */
 
 #include "KeccakPppprocessing.h"

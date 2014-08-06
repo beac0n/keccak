@@ -2,7 +2,7 @@
  * KeccakOptimized.h
  *
  *  Created on: 28.07.2014
- *      Author: beac0n
+ *      Author: Maximilian Schempp
  */
 
 #ifndef KECCAKOPTIMIZED_H_

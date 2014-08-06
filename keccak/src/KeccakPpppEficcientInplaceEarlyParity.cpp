@@ -1,8 +1,8 @@
-/* 
- * File:   KeccakPpppEficcientInplaceEarlyParity.cpp
- * Author: beac0n
- * 
- * Created on 31. Juli 2014, 14:59
+/*
+ * KeccakPpppEficcientInplaceEarlyParity.cpp
+ *
+ *  Created on: 31.07.2014
+ *      Author: Maximilian Schempp
  */
 
 #include "KeccakPpppEficcientInplaceEarlyParity.h"
@@ -26,14 +26,14 @@ void KeccakPpppEficcientInplaceEarlyParity::keccakf() {
                 state[N[ROUNDS][coordinate(x, 4)]];
     }
 
-    for (int round = 0; round < rounds; ++round) {
+    for (int round = 0; round < rounds - 1; ++round) {
 
         for (int x = 0; x < 5; ++x) {
             D[x] = C[(x + 4) % 5] ^ rotate(C[(x + 1) % 5], 1);
         }
 
         memset(C, 0, 5 * 8);
-        
+
         for (int y = 0; y < 5; ++y) {
 
             int curIndex;
@@ -56,4 +56,32 @@ void KeccakPpppEficcientInplaceEarlyParity::keccakf() {
         C[0] ^= roundConstants[round];
         state[0] ^= roundConstants[round];
     }
+
+    // last loop iteration start
+    for (int x = 0; x < 5; ++x) {
+        D[x] = C[(x + 4) % 5] ^ rotate(C[(x + 1) % 5], 1);
+    }
+
+    memset(C, 0, 5 * 8);
+
+    for (int y = 0; y < 5; ++y) {
+
+        int curIndex;
+
+        for (int x = 0; x < 5; ++x) {
+            curIndex = coordinate(x, y);
+            B[(x + 2 * y) % 5] = rotate(
+                    (state[N[(rounds - 1 + 1) % 4][curIndex]] ^ D[x]),
+                    cyclicShiftOffsets[N[1][curIndex]]
+                    );
+        }
+
+        for (int x = 0; x < 5; ++x) {
+            curIndex = coordinate(x, y);
+            state[N[(rounds - 1 + 1) % 4][curIndex]] = B[x] ^ ((~B[(x + 1) % 5]) & B[(x + 2) % 5]);
+        }
+    }
+
+    state[0] ^= roundConstants[rounds - 1];
+    // last loop iteration end
 }

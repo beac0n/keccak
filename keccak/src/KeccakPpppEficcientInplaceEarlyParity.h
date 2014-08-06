@@ -1,8 +1,8 @@
-/* 
- * File:   KeccakPpppEficcientInplaceEarlyParity.h
- * Author: beac0n
+/*
+ * KeccakPpppEficcientInplaceEarlyParity.h
  *
- * Created on 31. Juli 2014, 14:59
+ *  Created on: 28.07.2014
+ *      Author: Maximilian Schempp
  */
 
 #ifndef KECCAKPPPPEFICCIENTINPLACEEARLYPARITY_H

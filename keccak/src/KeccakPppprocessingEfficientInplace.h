@@ -2,7 +2,7 @@
  * KeccakPppprocessingEarlyParity.h
  *
  *  Created on: 28.07.2014
- *      Author: beac0n
+ *      Author: Maximilian Schempp
  */
 
 #ifndef KeccakPppprocessingEfficientInplace_H_
