@@ -32,7 +32,7 @@ void Keccak::theta() {
 
 	for (int i = 0; i < 5; ++i) {
 		// originally it would be C[(i-1)%5], but since
-		// (i-1)%5 == -1 and not 4, we need to write C[(i+4)%5]
+		// (-1)%5 == -1 and not 4, we need to write C[(i+4)%5]
 		D[i] = C[(i + 4) % 5] ^ rotate(C[(i + 1) % 5], 1);
 	}
 
@@ -69,9 +69,6 @@ void Keccak::keccakf() {
 	for (int i = 0; i < rounds; ++i) {
 		theta();
 		rhoPiChi();
-		//uint64_t* B = rhoPi();
-		//chi(B);
-		//delete[] (B);
 		iota(i);
 	}
 }

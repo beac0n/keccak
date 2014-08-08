@@ -27,9 +27,9 @@ public:
 
 	uint8_t* keccak(const uint8_t* input, int inputLength);
 protected:
-	uint64_t state[25];
+	uint64_t state[sizeOfState];
 
-	const uint64_t roundConstants[24] = {
+	const uint64_t roundConstants[rounds] = {
 			0x0000000000000001, 0x0000000000008082,	0x800000000000808a,
 			0x8000000080008000, 0x000000000000808b,	0x0000000080000001,
 			0x8000000080008081, 0x8000000000008009,	0x000000000000008a,
@@ -40,8 +40,8 @@ protected:
 			0x8000000000008080, 0x0000000080000001,	0x8000000080008008
 	};
 
-	const int cyclicShiftOffsets[25] = {
-			0, 1, 62, 28, 27, 36, 44, 6, 55, 20, 3, 10,	43,
+	const int cyclicShiftOffsets[sizeOfState] = {
+			0, 1, 62, 28, 27, 36, 44, 6, 55, 20, 3, 10, 43,
 			25, 39, 41, 45, 15, 21, 8, 18, 2, 61, 56, 14
 	};
 

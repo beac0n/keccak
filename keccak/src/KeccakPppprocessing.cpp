@@ -16,14 +16,14 @@ KeccakPppprocessing::~KeccakPppprocessing() {
 }
 
 void KeccakPppprocessing::keccakf() {
-    uint64_t A[sizeOfState];    
+    uint64_t A[sizeOfState];
     uint64_t B[5];
     uint64_t C[5];
     uint64_t D[5];
 
-    for (int round = 0; round < rounds; ++round) {        
+    for (int round = 0; round < rounds; ++round) {
         memcpy(A, state, sizeOfState * 8);
-        
+
         for (int x = 0; x < 5; ++x) {
             C[x] = A[coordinate(x, 0)] ^
                     A[coordinate(x, 1)] ^
@@ -54,32 +54,29 @@ void KeccakPppprocessing::keccakf() {
             }
         }
 
-        state[0] ^= roundConstants[round];        
+        state[0] ^= roundConstants[round];
     }
 
+/* Alogithms used to calculate newIndizies and newIndiziesX:
+    int calculate(int x, int y) { // newIndizies
 
-    /* Alogithms used to calculate newIndizies and newIndiziesX:
+        double xt = (double) x;
+        double yt = (double) y;
 
-     int calculate(int x, int y) { // newIndizies
+        int temp = xt + 3 * yt;
+        double newX = temp % 5;
+        double newY = xt;
 
-             double xt = (double) x;
-             double yt = (double) y;
+        return 5 * newY + newX;
+    }
 
-             int temp = ((-1.5 * xt + 0.5 * yt) + 10) * 6;
-             double newX = temp % 5;
-             double newY = xt;
+    int calculateX(int x, int y) { // newIndiziesX
+        double xt = (double) x;
+        double yt = (double) y;
 
-             return 5 * newY + newX;
-     }
+        int temp = xt + 3 * yt;
 
-     int calculateX(int x, int y) { // newIndiziesX
-             double xt = (double) x;
-             double yt = (double) y;
-
-             int temp = ((-1.5 * xt + 0.5 * yt) + 10) * 6;
-
-             return temp % 5;
-     }
-     */
+        return temp % 5;
+    }
+*/
 }
-
