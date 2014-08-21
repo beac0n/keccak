@@ -13,38 +13,6 @@ KeccakPppprocessingEfficientInplace::KeccakPppprocessingEfficientInplace() {
 KeccakPppprocessingEfficientInplace::~KeccakPppprocessingEfficientInplace() {
 }
 
-/* Algorithmen zur berechnung der neuene Koordinaten
-
-int coordinate(int x, int y, int i) {
-
-    int N[4][4] = {
-        { 1, 0, 0, 1},
-        { 1, 0, 1, 2},
-        { 1, 0, 3, 4},
-        { 1, 0, 2, 3}
-    };
-
-    int xt = (N[i][0] * x + N[i][1] * y) % 5;
-    int yt = (N[i][2] * x + N[i][3] * y) % 5;
-
-    return 5 * yt + xt;
-}
-
-void printNewCoordinates() {
-    for (int i = 0; i < 4; ++i) {
-
-        std::cout << "i=" << i << ": ";
-        for (int y = 0; y < 5; ++y) {
-            for (int x = 0; x < 5; ++x) {
-                std::cout << coordinate(x, y, i) << ", ";
-            }
-        }
-
-        std::cout << std::endl;
-    }
-}  
-*/
-
 void KeccakPppprocessingEfficientInplace::keccakf() {
     uint64_t B[5];
     uint64_t C[5];

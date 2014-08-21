@@ -56,27 +56,4 @@ void KeccakPppprocessing::keccakf() {
 
         state[0] ^= roundConstants[round];
     }
-
-/* Alogithms used to calculate newIndizies and newIndiziesX:
-    int calculate(int x, int y) { // newIndizies
-
-        double xt = (double) x;
-        double yt = (double) y;
-
-        int temp = xt + 3 * yt;
-        double newX = temp % 5;
-        double newY = xt;
-
-        return 5 * newY + newX;
-    }
-
-    int calculateX(int x, int y) { // newIndiziesX
-        double xt = (double) x;
-        double yt = (double) y;
-
-        int temp = xt + 3 * yt;
-
-        return temp % 5;
-    }
-*/
 }
