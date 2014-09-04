@@ -130,7 +130,7 @@ uint8_t* Keccak::keccak(const uint8_t* input, int inputLength) {
 	absorb(paddedInput);
 
 	// padded input is no longer needed
-	delete[] (paddedInput.paddedInput);
+	//delete[] (paddedInput.paddedInput);
 
 	// squeezing phase
 	return squeez();
